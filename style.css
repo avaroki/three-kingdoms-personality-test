@@ -29,3 +29,12 @@ button {
   margin-bottom: 18px;
   border-radius: 12px;
 }
+
+#restart {
+  text-align: center;
+  background: #2457b8;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}

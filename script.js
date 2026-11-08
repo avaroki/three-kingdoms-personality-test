@@ -1,4 +1,4 @@
-﻿const number = document.getElementById("number");
+const number = document.getElementById("number");
 const questionEl = document.getElementById("question");
 let currentQuestion = 0;
 
@@ -17,16 +17,16 @@ let scores = {
 };
 
 const characterDescriptions = {
-  유비: "당신은 사람을 먼저 생각하고 주변의 마음을 자연스럽게 모으는 타입입니다. 강하게 밀어붙이기보다 함께 가는 방식을 좋아하며, 어려운 상황에서도 관계와 신뢰를 쉽게 포기하지 않습니다.",
-  조조: "당신은 상황 판단이 빠르고 목표를 향해 효율적으로 움직이는 타입입니다. 감정보다 현실적인 결과를 중요하게 보고, 필요할 때는 과감한 결정을 내릴 줄 압니다.",
-  제갈량: "당신은 차분하게 생각하고 계획적으로 움직이는 지략가입니다. 문제를 감정적으로 보기보다 구조를 파악하고 해결책을 찾는 데 강합니다.",
-  관우: "당신은 의리와 신념을 중요하게 생각하는 타입입니다. 한 번 정한 원칙은 쉽게 바꾸지 않고, 어려운 순간에도 품위를 지키려 합니다.",
-  장비: "당신은 솔직하고 에너지가 넘치는 돌파형 타입입니다. 마음에 있는 말을 숨기지 않고, 답답한 상황에서는 직접 부딪혀 해결하려는 편입니다.",
+  유비: "당신은 사람을 먼저 생각하고 주변의 마음을 자연스럽게 모으는 리더입니다. 강하게 밀어붙이기보다 함께 가는 방식을 좋아하며, 타인과의 관계와 신뢰를 쉽게 포기하지 않습니다.",
+  조조: "당신은 상황 판단이 빠르고 목표를 향해 효율적으로 움직이는 전략가입니다. 감정보다 현실적인 결과를 중요하게 보고, 필요할 때는 과감한 결정을 내릴 줄 압니다.",
+  제갈량: "당신은 차분하게 생각하고 계획적으로 움직이는 책략가입니다. 문제를 감정적으로 보기보다 구조를 파악하고 해결책을 찾는 데 강합니다.",
+  관우: "당신은 의리와 신념을 중요하게 생각하는 무인입니다. 한 번 정한 원칙은 쉽게 바꾸지 않고, 어려운 순간에도 품위를 지키려 합니다.",
+  장비: "당신은 솔직하고 에너지가 넘치는 대장부입니다. 마음에 있는 말을 숨기지 않고, 답답한 상황에서도 직접 부딪혀 해결합니다.",
   손권: "당신은 분위기를 읽을 줄 아는 균형잡힌 리더입니다. 혼자 앞서가기보다 타인의 말을 경청하고 주변 상황을 살피며 가장 적합한 판단을 내립니다.",
   여포: "당신은 자유롭고 강렬한 에너지를 가진 승부사입니다. 누가 정해준 길보다 자신이 원하는 방향으로 움직이고, 결정적인 순간의 집중력과 추진력이 강합니다.",
-  조운: "당신은 조용하지만 책임감 있는 타입입니다. 항상 맡은 일을 묵묵히 완수하고, 위기 상황에서도 쉽게 흔들리지 않습니다.",
-  주유: "당신은 감각적이고 자존심이 강한 타입입니다. 타인에게 자연스럽게 매력을 드러내며, 분위기와 미묘한 감정의 흐름을 잘 읽습니다.",
-  사마의: "당신은 쉽게 속마음을 드러내지 않고 신중하게 움직이는 관찰자입니다. 당장 반응하기보다 상황을 지켜보며 적절한 타이밍을 기다릴 줄 압니다."
+  조운: "당신은 조용하지만 책임감 있는 에이스입니다. 항상 맡은 일을 묵묵히 완수하고, 위기 상황에서도 쉽게 흔들리지 않습니다.",
+  주유: "당신은 감각적이고 자존심이 강한 지휘관입니다. 타인에게 자연스럽게 매력을 드러내며, 분위기와 타인의 감정을 잘 읽습니다.",
+  사마의: "당신은 쉽게 속마음을 드러내지 않고 신중하게 움직이는 야심가입니다. 섣불리 움직이기보다는 상황을 지켜보며 적절한 타이밍을 기다릴 줄 압니다."
 };
 
 const characterImages = {
@@ -42,7 +42,7 @@ const characterImages = {
   사마의: "images/sima-yi.png"
 };
 
-const questions = [
+const questionBank = [
     
   {
     question: "친구들과 여행 가면 나는?",
@@ -146,9 +146,7 @@ const questions = [
 
 ];
 
-questions.sort(() => Math.random() - 0.5);
-
-questions.length = 7;
+let questions = [];
 
 const question = document.getElementById("question");
 
@@ -204,6 +202,7 @@ function showResult() {
   answer2.style.display = "none";
   answer3.style.display = "none";
   answer4.style.display = "none";
+  document.getElementById("restart").hidden = false;
 }
 
 function nextQuestion(answerIndex) {
@@ -224,4 +223,21 @@ answer2.onclick = () => nextQuestion(1);
 answer3.onclick = () => nextQuestion(2);
 answer4.onclick = () => nextQuestion(3);
 
-showQuestion();
+function startTest() {
+  currentQuestion = 0;
+  for (const character of Object.keys(scores)) scores[character] = 0;
+  const shuffled = [...questionBank];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  questions = shuffled.slice(0, 7);
+  for (const button of [answer1, answer2, answer3, answer4]) {
+    button.style.display = "";
+  }
+  document.getElementById("restart").hidden = true;
+  showQuestion();
+}
+
+document.getElementById("restart").onclick = startTest;
+startTest();
