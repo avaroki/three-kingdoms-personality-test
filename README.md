@@ -49,3 +49,11 @@ http://localhost:8088 에서 사이트를 확인할 수 있습니다.
 main에 push하면 Docker CI가 이미지를 빌드하고, 페이지와 정적 파일의 HTTP 응답 및 배포 버전을 확인한 후 Docker Hub의 `avaroki/three-kingdoms-personality-test`에 업로드합니다.
 필요한 GitHub Repository secrets는 `DOCKERHUB_USERNAME`과 `DOCKERHUB_TOKEN`입니다.
 현재 워크플로는 CI 단계이며, 로컬 컨테이너 자동 배포와 재배포 중 응답 검증은 이어서 구성합니다.
+
+## 로컬 자동 배포
+
+Windows x64 self-hosted runner가 실행 중이면 CI 성공 후 CD가 이어서 실행됩니다.
+서비스 주소는 http://localhost:8090 입니다. 기존 수동 실행 주소 8088과 별도로 동작합니다.
+새 컨테이너를 먼저 실행하고 상태와 커밋을 확인한 뒤 nginx 프록시를 reload하여 전환합니다.
+재배포 시에는 전환 전·중·후의 HTTP 요청과 버전을 기록하고 Actions Summary 및 artifact에 검증 결과를 저장합니다.
+첫 배포에서는 기존 서비스가 없으므로 연속 응답 검증은 다음 업데이트부터 수행합니다.

@@ -55,3 +55,26 @@ jobs:
           echo "## Docker CI succeeded" >> "$GITHUB_STEP_SUMMARY"
           echo "Image: $IMAGE:$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
           echo "HTTP checks passed for the website, scripts, styles, version and all 10 character images." >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: CD deploy and verify service
+    needs: build-test-push
+    runs-on: [self-hosted, Windows, X64]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout deployment scripts
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Deploy image and verify service
+        id: deployment
+        shell: powershell
+        run: |
+          & .\scripts\deploy.ps1 -Image "avaroki/three-kingdoms-personality-test:${{ github.sha }}" -Version "${{ github.sha }}"
+      - name: Upload deployment evidence
+        if: always() && steps.deployment.outputs.proof_dir != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ steps.deployment.outputs.proof_dir }}
+          retention-days: 14
