@@ -35,7 +35,7 @@ jobs:
           set -euo pipefail
           docker run -d --name hw3-ci-check -p 127.0.0.1:8080:80 "$IMAGE:$GITHUB_SHA"
           trap 'docker logs hw3-ci-check; docker rm -f hw3-ci-check' EXIT
-          curl --fail --retry 15 --retry-connrefused --retry-delay 1 http://127.0.0.1:8080/health
+          curl --fail --retry 15 --retry-all-errors --retry-delay 1 http://127.0.0.1:8080/health
           for path in / /script.js /style.css /version.json /images/liu-bei.png /images/cao-cao.png /images/zhuge-liang.png /images/guan-yu.png /images/zhang-fei.png /images/sun-quan.png /images/lu-bu.png /images/zhao-yun.png /images/zhou-yu.png /images/sima-yi.png; do
             curl --fail --silent --show-error "http://127.0.0.1:8080$path" -o /dev/null
           done
