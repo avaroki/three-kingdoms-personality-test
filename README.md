@@ -33,3 +33,19 @@ https://avaroki.github.io/three-kingdoms-personality-test/
 ## 만든 사람
 
 - avaroki
+
+## Docker로 실행하기
+
+```powershell
+docker build -t three-kingdoms-hw3:local .
+docker run -d --name three-kingdoms-hw3-local -p 127.0.0.1:8088:80 three-kingdoms-hw3:local
+```
+
+http://localhost:8088 에서 사이트를 확인할 수 있습니다.
+`/health`는 서버 상태, `/version.json`은 배포 버전을 반환합니다.
+
+## HW3 자동 빌드
+
+main에 push하면 Docker CI가 이미지를 빌드하고, 페이지와 정적 파일의 HTTP 응답 및 배포 버전을 확인한 후 Docker Hub의 `avaroki/three-kingdoms-personality-test`에 업로드합니다.
+필요한 GitHub Repository secrets는 `DOCKERHUB_USERNAME`과 `DOCKERHUB_TOKEN`입니다.
+현재 워크플로는 CI 단계이며, 로컬 컨테이너 자동 배포와 재배포 중 응답 검증은 이어서 구성합니다.
