@@ -202,6 +202,7 @@ function showResult() {
   answer2.style.display = "none";
   answer3.style.display = "none";
   answer4.style.display = "none";
+  document.getElementById("answers").hidden = true;
   document.getElementById("restart").hidden = false;
 }
 
@@ -235,6 +236,7 @@ function startTest() {
   for (const button of [answer1, answer2, answer3, answer4]) {
     button.style.display = "";
   }
+  document.getElementById("answers").hidden = false;
   document.getElementById("restart").hidden = true;
   showQuestion();
 }
